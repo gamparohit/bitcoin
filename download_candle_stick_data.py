@@ -28,7 +28,7 @@ def get_batch(symbol, interval, start_time, limit=1000):
 
 def candle_data_to_csv(base, quote, interval):
     try:
-        batches = [pd.read_csv(f'binance_data/{base}-{quote}-{interval}.csv')]
+        batches = [pd.read_csv(f'{base}-{quote}-{interval}.csv')]
         last_timestamp = batches[-1]['open_time'].max()
     except Exception as e:
         batches = [pd.DataFrame([], columns=LABELS)]
@@ -55,18 +55,17 @@ def candle_data_to_csv(base, quote, interval):
         print(datetime.now(), base, quote, interval, str(last_datetime)+covering_spaces, end='\r', flush=True)
     df = pd.concat(batches, ignore_index=True)
     if len(batches) > 1:
-        df.to_csv(f'binance_data/{base}-{quote}-{interval}.csv', index=False)
+        df.to_csv(f'{base}-{quote}-{interval}.csv', index=False)
         return True
     return 0
 
 
 def main():
-    intervals = ['1m','5m', '15m', '30m', '1h',  '4h', '1d', '1w']
+    #intervals = ['1m','5m', '15m', '30m', '1h',  '4h', '1d', '1w']
+    intervals = ['1h','1d', '1w']
     for interval in intervals:
         new_lines = candle_data_to_csv(base='BTC', quote='USDT',interval=interval)
-        new_lines = candle_data_to_csv(base='LTC', quote='USDT',interval=interval)
-        new_lines = candle_data_to_csv(base='ETH', quote='USDT',interval=interval)
-        new_lines = candle_data_to_csv(base='ADA', quote='USDT',interval=interval)
+
 
 if __name__ == '__main__':
     main()
